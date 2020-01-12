@@ -10,7 +10,8 @@ import {
 	set_target,
 	uid,
 	set_uid,
-	set_cid
+	set_cid,
+	hydrating
 } from '../app';
 import prefetch from '../prefetch/index';
 
@@ -56,6 +57,7 @@ function handle_mousemove(event: MouseEvent) {
 function trigger_prefetch(event: MouseEvent | TouchEvent) {
 	const a: HTMLAnchorElement = <HTMLAnchorElement>find_anchor(<Node>event.target);
 	if (!a || a.rel !== 'prefetch') return;
+	if (hydrating.in_progress) return;
 
 	prefetch(a.href);
 }
@@ -66,6 +68,7 @@ function handle_click(event: MouseEvent) {
 	if (which(event) !== 1) return;
 	if (event.metaKey || event.ctrlKey || event.shiftKey) return;
 	if (event.defaultPrevented) return;
+    if (hydrating.in_progress) return;
 
 	const a: HTMLAnchorElement | SVGAElement = <HTMLAnchorElement | SVGAElement>find_anchor(<Node>event.target);
 	if (!a) return;

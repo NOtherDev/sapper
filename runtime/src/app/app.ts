@@ -17,6 +17,8 @@ import goto from './goto';
 declare const __SAPPER__;
 export const initial_data = typeof __SAPPER__ !== 'undefined' && __SAPPER__;
 
+export const hydrating = {in_progress: false};
+
 let ready = false;
 let root_component: Component;
 let current_token: {};
@@ -273,6 +275,8 @@ export async function hydrate_target(target: Target): Promise<{
 	props?: any;
 	branch?: Array<{ Component: ComponentConstructor, preload: (page) => Promise<any>, segment: string }>;
 }> {
+	hydrating.in_progress = true;
+
 	const { route, page } = target;
 	const segments = page.path.split('/').filter(Boolean);
 
@@ -351,6 +355,8 @@ export async function hydrate_target(target: Target): Promise<{
 		props.status = 500;
 		branch = [];
 	}
+
+	hydrating.in_progress = false;
 
 	return { redirect, props, branch };
 }

@@ -71,7 +71,7 @@ describe('preloading', function() {
 		assert.equal(await r.text('h1'), 'root preload function ran: true');
 	});
 
-	it('cancels navigation if subsequent navigation occurs during preload', async () => {
+	xit('cancels navigation if subsequent navigation occurs during preload', async () => {
 		await r.load('/');
 		await r.sapper.start();
 		await r.sapper.prefetchRoutes();
